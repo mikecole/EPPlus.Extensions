@@ -2,10 +2,10 @@
 using System.Linq;
 using OfficeOpenXml;
 
-namespace EPPlusExtensions
+namespace EPPlus.Extensions
 {
     // ReSharper disable once InconsistentNaming
-    public static class EPPlusExtensions
+    public static class Extensions
     {
         public static DataSet ToDataSet(this ExcelPackage package, bool firstRowContainsHeader = false)
         {

@@ -7,10 +7,11 @@
     <ProjectGuid>{03756BE7-6CC0-4D3E-80CF-3F7DB49BC77A}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>EPPlusExtensions</RootNamespace>
-    <AssemblyName>epplus-extensions</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <RootNamespace>EPPlus.Extensions</RootNamespace>
+    <AssemblyName>EPPlus.Extensions</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
