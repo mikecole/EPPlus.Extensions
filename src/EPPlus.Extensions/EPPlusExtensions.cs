@@ -8,6 +8,12 @@ namespace EPPlus.Extensions
     // ReSharper disable once InconsistentNaming 
     public static class Extensions
     {
+        /// <summary>
+        /// Extracts a DataSet from the ExcelPackage.
+        /// </summary>
+        /// <param name="package">The Excel package.</param>
+        /// <param name="firstRowContainsHeader">if set to <c>true</c> [first row contains header].</param>
+        /// <returns></returns>
         public static DataSet ToDataSet(this ExcelPackage package, bool firstRowContainsHeader = false)
         {
             var headerRow = firstRowContainsHeader ? 1 : 0;
@@ -15,11 +21,18 @@ namespace EPPlus.Extensions
         }
 
 
+        /// <summary>
+        /// Extracts a DataSet from the ExcelPackage.
+        /// </summary>
+        /// <param name="package">The Excel package.</param>
+        /// <param name="headerRow">The header row. Use 0 if there is no header row. Value must be 0 or greater.</param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentException">headerRow must be 0 or greater.</exception>
         public static DataSet ToDataSet(this ExcelPackage package, int headerRow = 0)
         {
             if (headerRow < 0)
             {
-                throw new ArgumentException("headerRow must be zero or greater.");
+                throw new ArgumentException("headerRow must be 0 or greater.");
             }
             var result = new DataSet();
 
