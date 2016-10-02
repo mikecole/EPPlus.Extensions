@@ -31,7 +31,7 @@ namespace EPPlus.Extensions
         {
             if (headerRow < 0)
             {
-                throw new ArgumentException("headerRow must be 0 or greater.");
+                throw new ArgumentOutOfRangeException(nameof(headerRow), headerRow, "Must be 0 or greater.");
             }
 
             var result = new DataSet();
