@@ -20,7 +20,6 @@ namespace EPPlus.Extensions
             return ToDataSet(package, headerRow);
         }
 
-
         /// <summary>
         /// Extracts a DataSet from the ExcelPackage.
         /// </summary>
@@ -34,8 +33,8 @@ namespace EPPlus.Extensions
             {
                 throw new ArgumentException("headerRow must be 0 or greater.");
             }
-            var result = new DataSet();
 
+            var result = new DataSet();
 
             foreach (var sheet in package.Workbook.Worksheets)
             {
@@ -49,12 +48,9 @@ namespace EPPlus.Extensions
                 var columns = from firstRowCell in sheet.Cells[sheetStartRow, 1, sheetStartRow, sheet.Dimension.End.Column]
                               select new DataColumn(headerRow > 0 ? firstRowCell.Text : $"Column {firstRowCell.Start.Column}");
 
-
                 table.Columns.AddRange(columns.ToArray());
 
-
                 var startRow = headerRow > 0 ? sheetStartRow + 1 : sheetStartRow;
-
 
                 for (var rowIndex = startRow; rowIndex <= sheet.Dimension.End.Row; rowIndex++)
                 {
@@ -66,13 +62,10 @@ namespace EPPlus.Extensions
                     }
                 }
 
-
                 result.Tables.Add(table);
             }
 
-
             return result;
         }
-
     }
 }
