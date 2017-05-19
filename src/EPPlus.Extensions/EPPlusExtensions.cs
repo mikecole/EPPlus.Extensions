@@ -46,7 +46,7 @@ namespace EPPlus.Extensions
                     sheetStartRow = headerRow;
                 }
                 var columns = from firstRowCell in sheet.Cells[sheetStartRow, 1, sheetStartRow, sheet.Dimension.End.Column]
-                              select new DataColumn(headerRow > 0 ? firstRowCell.Text : $"Column {firstRowCell.Start.Column}");
+                              select new DataColumn(headerRow > 0 ? firstRowCell.Value.ToString() : $"Column {firstRowCell.Start.Column}");
 
                 table.Columns.AddRange(columns.ToArray());
 
@@ -58,7 +58,7 @@ namespace EPPlus.Extensions
                     var row = table.Rows.Add();
                     foreach (var cell in inputRow)
                     {
-                        row[cell.Start.Column - 1] = cell.Text;
+                        row[cell.Start.Column - 1] = cell.Value;
                     }
                 }
 

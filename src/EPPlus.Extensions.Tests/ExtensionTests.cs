@@ -119,11 +119,40 @@ namespace EPPlus.Extensions.Tests
             result.Tables[0].Rows[49][0].ToString().ShouldBe("Wyoming");
         }
 
+        public void ToDataSet_WhenCsv_AllowsDateFormat()
+        {
+            var package = GetMarvelCsvPackage();
+
+            var result = package.ToDataSet(true);
+
+            var cellValue = result.Tables[0].Rows[0][3];
+
+            DateTime temp;
+            DateTime.TryParse(cellValue.ToString(), out temp).ShouldBeTrue($"Input was {cellValue}");
+
+            Convert.ToDateTime(cellValue).ToString("o").ShouldBe(DateTime.Parse("04/22/1950 08:41 PM").ToString("o"));
+        }
+
         private static ExcelPackage GetMarvelPackage()
         {
-            var path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"Marvel.xlsx");
+            var path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "Marvel.xlsx");
             var file = new FileInfo(path);
             var package = new ExcelPackage(file);
+            return package;
+        }
+
+        private static ExcelPackage GetMarvelCsvPackage()
+        {
+            var path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "Marvel.csv");
+            var file = new FileInfo(path);
+            var package = new ExcelPackage();
+
+            var textFormat = new ExcelTextFormat();
+            textFormat.TextQualifier = '"';
+
+            var sheet = package.Workbook.Worksheets.Add("Marvel");
+            sheet.Cells.LoadFromText(File.ReadAllText(file.FullName), textFormat);
+
             return package;
         }
 
