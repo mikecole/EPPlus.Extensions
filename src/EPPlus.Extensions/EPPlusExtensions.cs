@@ -2,6 +2,7 @@
 using System.Linq;
 using OfficeOpenXml;
 using System;
+using System.Collections.Generic;
 
 namespace EPPlus.Extensions
 {
@@ -66,6 +67,27 @@ namespace EPPlus.Extensions
             }
 
             return result;
+        }
+
+        public static void TrimLastEmptyRows(this ExcelWorksheet worksheet)
+        {
+            while (worksheet.IsLastRowEmpty())
+            {
+                worksheet.DeleteRow(worksheet.Dimension.End.Row, 1);
+            }
+        }
+
+        public static bool IsLastRowEmpty(this ExcelWorksheet worksheet)
+        {
+            var empties = new List<bool>();
+
+            for (var index = 1; index <= worksheet.Dimension.End.Column; index++)
+            {
+                var value = worksheet.Cells[worksheet.Dimension.End.Row, index].Value;
+                empties.Add(value == null || string.IsNullOrWhiteSpace(value.ToString()));
+            }
+
+            return empties.All(e => e);
         }
     }
 }

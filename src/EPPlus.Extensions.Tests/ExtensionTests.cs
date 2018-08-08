@@ -133,6 +133,40 @@ namespace EPPlus.Extensions.Tests
             Convert.ToDateTime(cellValue).ToString("o").ShouldBe(DateTime.Parse("04/22/1950 08:41 PM").ToString("o"));
         }
 
+        public void IsLastRowEmpty_ReturnsFalse_WhenLastRowIsNotEmpty()
+        {
+            var package = GetMarvelCsvPackage();
+            package.Workbook.Worksheets["Marvel"].IsLastRowEmpty().ShouldBeFalse();
+        }
+
+        public void IsLastRowEmpty_ReturnsTrue_WhenLastRowIsEmpty()
+        {
+            var package = GetMarvelWithSpacesCsvPackage();
+            package.Workbook.Worksheets["Marvel"].IsLastRowEmpty().ShouldBeTrue();
+        }
+
+        public void TrimLastEmptyRows_RemovesEmptyRows()
+        {
+            var package = GetMarvelWithSpacesCsvPackage();
+            var sheet = package.Workbook.Worksheets["Marvel"];
+
+            sheet.TrimLastEmptyRows();
+
+            sheet.IsLastRowEmpty().ShouldBeFalse();
+            sheet.Dimension.End.Row.ShouldBe(11);
+        }
+
+        public void TrimLastEmptyRows_DoesRemoveNotEmptyRows()
+        {
+            var package = GetMarvelCsvPackage();
+            var sheet = package.Workbook.Worksheets["Marvel"];
+
+            sheet.TrimLastEmptyRows();
+
+            sheet.IsLastRowEmpty().ShouldBeFalse();
+            sheet.Dimension.End.Row.ShouldBe(11);
+        }
+
         private static ExcelPackage GetMarvelPackage()
         {
             var path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "Marvel.xlsx");
@@ -147,8 +181,21 @@ namespace EPPlus.Extensions.Tests
             var file = new FileInfo(path);
             var package = new ExcelPackage();
 
-            var textFormat = new ExcelTextFormat();
-            textFormat.TextQualifier = '"';
+            var textFormat = new ExcelTextFormat { TextQualifier = '"' };
+
+            var sheet = package.Workbook.Worksheets.Add("Marvel");
+            sheet.Cells.LoadFromText(File.ReadAllText(file.FullName), textFormat);
+
+            return package;
+        }
+
+        private static ExcelPackage GetMarvelWithSpacesCsvPackage()
+        {
+            var path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "MarvelWithSpaces.csv");
+            var file = new FileInfo(path);
+            var package = new ExcelPackage();
+
+            var textFormat = new ExcelTextFormat { TextQualifier = '"' };
 
             var sheet = package.Workbook.Worksheets.Add("Marvel");
             sheet.Cells.LoadFromText(File.ReadAllText(file.FullName), textFormat);
